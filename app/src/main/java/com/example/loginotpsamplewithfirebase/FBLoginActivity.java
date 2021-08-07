@@ -1,5 +1,8 @@
 package com.example.loginotpsamplewithfirebase;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,30 +26,30 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-
-public class FacebookLoginActivity extends MainActivity {
+public class FBLoginActivity extends MainActivity {
 
     CallbackManager callbackManager;
     static final String TAG = "FACEBOOK_LOGIN_TAG";
     private FirebaseAuth mAuth;
+    private  AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        setContentView(R.layout.activity_f_b_login);
+
+
 
 
         callbackManager = CallbackManager.Factory.create();
-
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, ""+loginResult.getAccessToken().toString());
                         handleFacebookAccessToken(loginResult.getAccessToken());
                     }
 
@@ -58,6 +61,7 @@ public class FacebookLoginActivity extends MainActivity {
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
+                        Log.d(TAG, "Error");
                     }
                 });
     }
@@ -86,7 +90,7 @@ public class FacebookLoginActivity extends MainActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                            Toast.makeText(FBLoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -95,8 +99,7 @@ public class FacebookLoginActivity extends MainActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(FacebookLoginActivity.this, ProfileActivity.class );
+        Intent intent = new Intent(FBLoginActivity.this, ProfileActivity.class );
         startActivity(intent);
     }
-
 }

@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Begin Facebook SignIn");
-                Intent intent = new Intent(MainActivity.this, FacebookLoginActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, FBLoginActivity.class);
+               startActivity(intent);
             }
         });
 
