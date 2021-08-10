@@ -154,7 +154,7 @@ public class OTPAuthActivity extends AppCompatActivity {
                 else {
                     verifyPhoneNumberWithCode(mVerificationId, code);
 
-                    Intent intent = new Intent(OTPAuthActivity.this, ProfileActivity.class);
+                    Intent intent = new Intent(OTPAuthActivity.this, SignUpActivity.class);
                     startActivity(intent);
                 }
             }
@@ -216,7 +216,10 @@ public class OTPAuthActivity extends AppCompatActivity {
                 Toast.makeText(OTPAuthActivity.this, "Logged in as "+phone, Toast.LENGTH_LONG).show();
 
                 //using the userClone to replicate the object user in insertUser
-                insertUser(userClone);
+//                insertUser(userClone);
+
+                SignUpActivity signUpActivity = new SignUpActivity();
+
 
             }
 

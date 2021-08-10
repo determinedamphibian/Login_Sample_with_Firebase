@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         img_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(MainActivity.this, OTPAuthActivity.class);
                 startActivity(intent);
             }
         });

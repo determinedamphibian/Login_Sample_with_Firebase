@@ -22,13 +22,11 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     EditText et_f_name, et_l_name, et_num, et_address, et_password, et_re_password;
     TextInputLayout prefix_num;
-    TextView tv_already_reg;
-    Button btn_register;
+    Button btn_save;
     FirebaseFirestore db;
-    private static final String TAG = "MAIN_TAG";
-
+    FirebaseAuth firebaseAuth;
     User registered_user = new User();
-
+    private static final String TAG = "SIGN_UP";
     OTPAuthActivity otpAuthActivity = new OTPAuthActivity();
 
     //when text view named already registered was pressed
@@ -38,7 +36,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         //initialize variables
-        tv_already_reg = findViewById(R.id.tv_already_registered);
         et_f_name = findViewById(R.id.et_f_name);
         et_l_name = findViewById(R.id.et_l_name);
         et_num = findViewById(R.id.et_number);
@@ -46,7 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
         et_address = findViewById(R.id.et_address);
         et_password = findViewById(R.id.et_password);
         et_re_password = findViewById(R.id.et_re_password);
-        btn_register = findViewById(R.id.btn_register_sign_up);
+        btn_save = findViewById(R.id.btn_register_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -55,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         //it will call a method goToOTP which will redirect the user to OTP Authentication when the button was pressed
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 registerUser();
@@ -63,13 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
 
-        //it will call a method goBackLogin which goes back to Login Activity
-        tv_already_reg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBackLogin();
-            }
-        });
 
     }
 
@@ -139,15 +129,25 @@ public class SignUpActivity extends AppCompatActivity {
         user.put("address", address1);
         user.put("password", password1);
 
+       firebaseAuth = FirebaseAuth.getInstance();
+       firebaseAuth.getCurrentUser();
 
-        otpAuthActivity.getUserInformation((HashMap) user);
+       String userID = firebaseAuth.getUid();
+
+        Log.d(TAG, "UID: "+userID);
+        db.collection("users").document(userID).set(user);
+
+//        otpAuthActivity.getUserInformation((HashMap) user);
 
 
-        Intent intent = new Intent(SignUpActivity.this, OTPAuthActivity.class);
+
+        Intent intent = new Intent(SignUpActivity.this, ProfileActivity.class);
         startActivity(intent);
 
 
     }
+
+
 
     //method for calling Login Activity
     private void goBackLogin() {

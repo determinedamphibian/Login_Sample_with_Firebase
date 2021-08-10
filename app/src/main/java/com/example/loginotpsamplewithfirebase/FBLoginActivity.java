@@ -13,9 +13,11 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -37,11 +39,6 @@ public class FBLoginActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_f_b_login);
-
-
-
-
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
 
@@ -49,7 +46,7 @@ public class FBLoginActivity extends MainActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, ""+loginResult.getAccessToken().toString());
+                        Log.d(TAG, "Successful login: "+loginResult.getAccessToken().toString());
                         handleFacebookAccessToken(loginResult.getAccessToken());
                     }
 
@@ -71,6 +68,8 @@ public class FBLoginActivity extends MainActivity {
 
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
