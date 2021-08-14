@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +30,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tv_create_account;
+    private TextView tv_create_account, tv_userName, tv_password;
     private ImageView img_phone, img_googleMail, img_facebook;
+    private Button btn_login;
+
 
 
     private static final int RC_SIGN_IN = 100;
@@ -77,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         img_googleMail = findViewById(R.id.image_gmail);
 
-
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -99,8 +100,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //balikan
+        //balikan mooooooooooooooooooooooo
         //Stream.builder().
+
+        btn_login = findViewById(R.id.btn_login);
+        tv_userName = findViewById(R.id.username);
+        tv_password = findViewById(R.id.password);
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userName = tv_userName.getText().toString();
+                String passWord = tv_password.getText().toString();
+
+                FirebaseFirestore firebaseFirestore = null;
+
+                firebaseFirestore.getNamedQuery("f");
+
+            }
+        });
+
 
 
     }
@@ -137,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogleAccount(GoogleSignInAccount account) {
         Log.d(TAG, "Begin firebase auth with google account");
+
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -160,12 +182,16 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG,"Account Created..."+eMail);
                             Toast.makeText(MainActivity.this, "Account created: "+eMail, Toast.LENGTH_LONG);
 
+                            //new
+                            SignUpActivity signUpActivity = new SignUpActivity();
+                            signUpActivity.registerGoogleUser(uid);
+                            //
                             Intent intent = new Intent( MainActivity.this, SignUpActivity.class);
                             startActivity(intent);
                         }
                         else {
 
-                            Log.d(TAG, "Existing user"+eMail);
+                            Log.d(TAG, "Existing user "+eMail);
                             Toast.makeText(MainActivity.this, "Existing user: "+eMail, Toast.LENGTH_LONG);
                             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                             startActivity(intent);
